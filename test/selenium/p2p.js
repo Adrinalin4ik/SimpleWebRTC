@@ -2,7 +2,7 @@
 var test = require('tape');
 
 // https://code.google.com/p/selenium/wiki/WebDriverJs
-var seleniumHelpers = require('./selenium-lib');
+var seleniumHelpers = require('webrtc-testbed/webdriver');
 var webdriver = require('selenium-webdriver');
 
 function doJoin(driver, room) {
@@ -20,7 +20,9 @@ function testP2P(browserA, browserB, t) {
 
     userA.wait(function () {
         return userA.executeScript(function () {
-            return window.webrtc && window.webrtc.getPeers().length === 1 && window.webrtc.getPeers()[0].pc.iceConnectionState === 'connected';
+            return window.webrtc && window.webrtc.getPeers().length === 1 &&
+                (window.webrtc.getPeers()[0].pc.iceConnectionState === 'connected' ||
+                 window.webrtc.getPeers()[0].pc.iceConnectionState === 'completed');
         });
     }, 30 * 1000)
     .then(function () {
