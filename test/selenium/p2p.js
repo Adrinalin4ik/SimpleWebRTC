@@ -14,7 +14,7 @@ function testP2P(browserA, browserB, t) {
 
     var userA = seleniumHelpers.buildDriver(browserA);
     var userB = seleniumHelpers.buildDriver(browserB);
-    doJoin(userA, room);
+    doJoin(userA, room)
     .then(() => {
         return doJoin(userB, room);
     })
