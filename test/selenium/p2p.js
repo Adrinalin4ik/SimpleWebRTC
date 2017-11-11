@@ -13,30 +13,31 @@ function testP2P(browserA, browserB, t) {
     var room = 'testing_' + Math.floor(Math.random() * 100000);
 
     var userA = seleniumHelpers.buildDriver(browserA);
-    doJoin(userA, room);
-
     var userB = seleniumHelpers.buildDriver(browserB);
-    doJoin(userB, room);
-
-    userA.wait(function () {
-        return userA.executeScript(function () {
-            return window.webrtc && window.webrtc.getPeers().length === 1 &&
-                (window.webrtc.getPeers()[0].pc.iceConnectionState === 'connected' ||
-                 window.webrtc.getPeers()[0].pc.iceConnectionState === 'completed');
-        });
-    }, 30 * 1000)
-    .then(function () {
+    doJoin(userA, room);
+    .then(() => {
+        return doJoin(userB, room);
+    })
+    .then(() => {
+        return userA.wait(() => {
+            return userA.executeScript(function () {
+                return window.webrtc && window.webrtc.getPeers().length === 1 &&
+                    (window.webrtc.getPeers()[0].pc.iceConnectionState === 'connected' ||
+                     window.webrtc.getPeers()[0].pc.iceConnectionState === 'completed');
+            });
+        }, 30 * 1000)
+    })
+    .then(() => {
         t.pass('P2P connected');
-        userA.quit();
-        userB.quit().then(function () {
-            t.end();
-        });
+        return Promise.all([userA.quit(), userB.quit()])
+    })
+    .then(() => { 
+        t.end();
     })
     .then(null, function (err) {
-        t.fail(err);
-        userA.quit();
-        userB.quit();
-    })
+        return Promise.all([userA.quit(), userB.quit()])
+            .then(() => t.fail(err));
+    });
 }
 
 test('P2P, Chrome-Chrome', function (t) {
