@@ -1,9 +1,9 @@
 {
-  "name": "simplewebrtc",
-  "version": "3.0.1",
+  "name": "custom-simplewebrtc",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/andyet/SimpleWebRTC.git"
+    "url": "https://github.com/Adrinalin4ik/SimpleWebRTC.git"
   },
   "main": "./src/simplewebrtc.js",
   "description": "World's easiest webrtc",

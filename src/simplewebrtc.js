@@ -283,8 +283,8 @@ SimpleWebRTC.prototype.handlePeerStreamAdded = function (peer) {
     var video = attachMediaStream(peer.stream);
 
     // store video element as part of peer for easy removal
-    peer.videoEl = video;
-    video.id = this.getDomId(peer);
+    // peer.videoEl = video;
+    // video.id = this.getDomId(peer);
 
     if (container) container.appendChild(video);
 
